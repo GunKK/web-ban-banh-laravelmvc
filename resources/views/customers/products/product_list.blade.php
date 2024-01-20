@@ -26,8 +26,12 @@
                 <p>{{ $product->category->name }}</p>
             </a>
             <div>
-                <span class="text-danger"><s>$49.99</s></span>
-                <span class="mb-3 h6">${{ $product->price_base }}</span>
+                @if ($product->price_sale !== null)
+                    <span class="text-danger"><s>{{ number_format($product->price_base, 2) }} đ</s></span>
+                    <span class="mb-3 h6">{{ number_format($product->price_base*(100 - $product->price_sale) / 100, 2) }} đ</span>
+                @else
+                    <span class="mb-3 h6">{{ number_format($product->price_base , 2) }} đ</span>
+                @endif
             </div>
             <div>
                 <button data-id="{{ $product->id }}" class="add-to-cart btn btn-primary shadow-0 me-1">Add to cart</button>

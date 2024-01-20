@@ -1,5 +1,5 @@
 .cart-header__list {
-    height: 325px;
+    max-height: 325px;
     overflow: scroll;
 }
 

@@ -4,8 +4,10 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SessionController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Gateways\PaypalController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -53,17 +55,26 @@ Route::get('/destroy.cart', function() {
     session()->forget('cart');
 });
 
-// ----------------------CUSTOMER----------------------------------------------------------------------------------------------------- //
-// Route::middleware('web', 'checkCustomer')->prefix('admin')->group(function () {
-// });
 
 Route::get('/auth/{social}', [SocialAccountController::class, 'redirectToProvider'])->name('login.{social}');
 Route::get('/auth/{social}/callback', [SocialAccountController::class, 'handleProviderCallback'])->name('login.{social}.callback');
 
-Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
-Route::put('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');
-Route::delete('/comment/{id}', [CommentController::class, 'forceDelete'])->name('comment.destroy');
-Route::post('/comment/replies', [CommentController::class, 'findByParentId'])->name('comment.getReplies');
+// ----------------------CUSTOMER----------------------------------------------------------------------------------------------------- //
+Route::middleware('web', 'checkCustomer')->prefix('customer')->group(function () {
+    Route::get('/checkout', [BillController::class, 'create'])->name('bill.create');
+    Route::post('/checkout', [BillController::class, 'store'])->name('bill.store');
+    Route::get('/bill/index', [BillController::class, 'index'])->name('bill.index');
+
+    Route::get('paypal/create', [PaypalController::class, 'create'])->name('paypal.create');
+    Route::post('paypal/payment', [PaypalController::class, 'payment'])->name('paypal.payment');
+    Route::get('paypal/success', [PaypalController::class, 'success'])->name('paypal.success');
+    Route::get('paypal/cancel', [PaypalController::class, 'cancel'])->name('paypal.cancel');
+
+    Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
+    Route::put('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');
+    Route::delete('/comment/{id}', [CommentController::class, 'forceDelete'])->name('comment.destroy');
+    Route::post('/comment/replies', [CommentController::class, 'findByParentId'])->name('comment.getReplies');
+});
 
 // ----------------------ADMIN----------------------------------------------------------------------------------------------------- //
 Route::middleware('web', 'checkAdmin')->prefix('admin')->group(function () {

@@ -15,6 +15,7 @@ class CartController extends Controller
         $id = $request->id;
         $product = Product::withTrashed()->findOrFail($id);
         $msg = "Đã thêm ".$product->name." thành công vào giỏ";
+        $productPrice = $product->price_sale ==null ? $product->price_base : $product->price_base*(100 - $product->price_sale) / 100;
 
         $cart = session()->get('cart', []);
 
@@ -25,7 +26,7 @@ class CartController extends Controller
                 "id" => $id,
                 "name" => $product->name,
                 "quantity" => 1,
-                "price" => $product->price_base,
+                "price" => $productPrice,
                 "image" => $product->images
             ];
 

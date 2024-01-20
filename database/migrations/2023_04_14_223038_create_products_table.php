@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->float('price_base');
-            $table->float('price_sale')->nullable();
+            $table->float('price_sale')->nullable()->default(null);
             $table->string('images');
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
