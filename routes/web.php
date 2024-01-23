@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BillController as AdminBillController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -101,5 +102,11 @@ Route::middleware('web', 'checkAdmin')->prefix('admin')->group(function () {
         Route::delete('/{id}', [AdminCategoryController::class, 'destroy'])->name('category.destroy');
         Route::get('/only-trash', [AdminCategoryController::class, 'onlyTrashed'])->name('category.onlyTrashed');
         Route::post('/{id}/restore', [AdminCategoryController::class, 'restore'])->name('category.restore');
+    });
+
+    Route::prefix('bill')->group(function () {
+        Route::get('/', [AdminBillController::class, 'index'])->name('bill.index');
+        Route::get('/{id}/edit', [AdminBillController::class, 'edit'])->name('bill.edit');
+        Route::put('/{id}', [AdminBillController::class, 'update'])->name('bill.update');
     });
 });

@@ -23,6 +23,7 @@ class BillController extends Controller
         DB::beginTransaction();
         try {
             $bill = new Bill();
+            $bill->fill($request->validated());
             $bill->payment_amount = (float) $request->payment_amount;
             $bill->payment_method = $request->payment_method;
             $bill->status = BillStatus::Processing;

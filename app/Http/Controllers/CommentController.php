@@ -5,11 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateCommentRequest;
 use App\Models\Comment;
 use App\Models\Product;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Comment::class, 'comment');
+    }
 
     public function findByParentId(Request $request) {
 
@@ -53,7 +60,8 @@ class CommentController extends Controller
         return redirect()->route('product.show', ['id' => $request->productId])->with('success', 'Xóa bình luận thành công');
     }
 
-    public function forceDelete(Request $request, string $id) {
+    public function forceDelete(Request $request, string $id)
+    {
         Comment::findOrFail($id)->forceDelete();
         return redirect()->route('product.show', ['id' => $request->productId])->with('success', 'Xóa bình luận thành công');
     }
