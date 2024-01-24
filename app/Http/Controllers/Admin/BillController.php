@@ -15,7 +15,7 @@ class BillController extends Controller
 
     public function edit($id)
     {
-        $bill = Bill::with('billItem')->findOrFail($id);
+        $bill = Bill::with('billItems')->findOrFail($id);
         return view('admins.bills.edit', compact('bill'));
     }
 

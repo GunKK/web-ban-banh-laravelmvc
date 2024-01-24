@@ -47,6 +47,7 @@
                     <ul>
                         @if (Auth()->check())
                             <li><a href="#">{{ Auth::user()->name }}</a></li>
+                            <li><a href="{{ route('bill.list') }}">Đơn hàng</a></li>
                             <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
                         @else
                             <li><a href="{{ route('sign_up') }}">Đăng kí</a></li>

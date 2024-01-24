@@ -14,7 +14,7 @@
                             <div class="card-body p-4">
 
                                 <form action="{{ route('bill.store') }}" method="post" class="row">
-
+                                    @csrf
                                     <div class="col-lg-6 col-md-12">
                                         <h5 class="mb-3"><a href="{{ route('product') }}" class="text-body"><i
                                                     class="bi bi-arrow-left-circle-fill me-2"></i>Continue shopping</a></h5>

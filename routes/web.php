@@ -43,6 +43,10 @@ Route::get('/logout', [SessionController::class, 'destroy'])->name('logout');
 
 Route::get('/sign_up', [RegisterController::class, 'create'])->name('sign_up');
 Route::post('/sign_up', [RegisterController::class, 'store'])->name('sign_up.store');
+Route::get('/verify',  [RegisterController::class, 'verify'])->name('verification.notice');;
+Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'sendMail'])->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', [RegisterController::class, 'resendMail'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
@@ -61,10 +65,10 @@ Route::get('/auth/{social}', [SocialAccountController::class, 'redirectToProvide
 Route::get('/auth/{social}/callback', [SocialAccountController::class, 'handleProviderCallback'])->name('login.{social}.callback');
 
 // ----------------------CUSTOMER----------------------------------------------------------------------------------------------------- //
-Route::middleware('web', 'checkCustomer')->prefix('customer')->group(function () {
+Route::middleware('web', 'verified','checkCustomer')->prefix('customer')->group(function () {
     Route::get('/checkout', [BillController::class, 'create'])->name('bill.create');
     Route::post('/checkout', [BillController::class, 'store'])->name('bill.store');
-    Route::get('/bill/index', [BillController::class, 'index'])->name('bill.index');
+    Route::get('/bill/index', [BillController::class, 'index'])->name('bill.list');
 
     Route::get('paypal/create', [PaypalController::class, 'create'])->name('paypal.create');
     Route::post('paypal/payment', [PaypalController::class, 'payment'])->name('paypal.payment');
@@ -78,7 +82,7 @@ Route::middleware('web', 'checkCustomer')->prefix('customer')->group(function ()
 });
 
 // ----------------------ADMIN----------------------------------------------------------------------------------------------------- //
-Route::middleware('web', 'checkAdmin')->prefix('admin')->group(function () {
+Route::middleware('web', 'verified', 'checkAdmin')->prefix('admin')->group(function () {
     Route::get('/', function () {
         return view('admins.dashboard');
     })->name('dashboard');

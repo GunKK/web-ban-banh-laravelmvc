@@ -1,10 +1,12 @@
 @extends('customers.layouts.app')
-@section('title', 'Bill')
+@section('title', 'Bill customer')
 @section('content')
 
     <section class="mt-5">
         <div class="container">
-
+            <div class="row">
+                {{ $bills->links()}}
+            </div>
             @foreach ( $bills as $bill )
             <div class="row shadow p-3 mb-5 bg-body-tertiary rounded">
                 <div class="col-lg-6 col-md-12">
@@ -38,7 +40,10 @@
                                 <th scope="col">Thành tiền</th>
                             </tr>
                         </thead>
-                        @foreach ( $bill->billItem as $item )
+                        @php
+                            $billItems = $bill->billItems;
+                        @endphp
+                        @foreach ( $billItems as $item )
                             <tr>
                                 <td scope="row">
                                     <span class="h6">{{ $item->product->name }}: </span>

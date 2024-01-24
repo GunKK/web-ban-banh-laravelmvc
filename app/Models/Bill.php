@@ -21,7 +21,7 @@ class Bill extends Model
         'note',
     ];
 
-    public function billItem()
+    public function billItems()
     {
         return $this->hasMany(BillItem::class);
     }

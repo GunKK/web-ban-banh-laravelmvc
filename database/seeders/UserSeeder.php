@@ -21,12 +21,14 @@ class UserSeeder extends Seeder
                 'email'  =>'admin@gmail.com',
                 'name' => 'admin',
                 'password' =>  Hash::make('admin'),
+                'email_verified_at' => '2024-01-24 08:54:15',
                 'role' => 0
             ],
             [
                 'email'  =>'hau.nguyebk19@gmail.com',
                 'name' => 'Hau customer',
                 'password' =>  Hash::make('hau.nguyebk19'),
+                'email_verified_at' => '2024-01-24 08:54:15',
                 'role' => 1
             ]
         ]);
