@@ -91,7 +91,7 @@ Route::middleware('web', 'verified', 'checkAdmin')->prefix('admin')->group(funct
         Route::get('/create', [AdminProductController::class, 'create'])->name('product.create');
         Route::post('/', [AdminProductController::class, 'store'])->name('product.store');
         Route::get('/{id}/edit', [AdminProductController::class, 'edit'])->name('product.edit');
-        Route::patch('/{id}', [AdminProductController::class, 'update'])->name('product.update');
+        Route::put('/{id}', [AdminProductController::class, 'update'])->name('product.update');
         Route::delete('/{id}', [AdminProductController::class, 'destroy'])->name('product.destroy');
         Route::get('/only-trash', [AdminProductController::class, 'onlyTrashed'])->name('product.onlyTrashed');
         Route::post('/{id}/restore', [AdminProductController::class, 'restore'])->name('product.restore');

@@ -7,6 +7,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
@@ -17,7 +18,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy("id", "ASC")->paginate(6);
+        $categories = Cache::remember('categories-page-' . request('page', 1), 3600, function() {
+            return Category::orderBy("id", "ASC")->paginate(6);
+        });
         return view('admins.categories.index', compact('categories'));
     }
 
@@ -80,7 +83,7 @@ class CategoryController extends Controller
         if ($id !== "1") {
             $category = Category::findOrFail($id);
             $category->delete();
-            Product::where('category_id', $id)->update(['category_id' => 1]);
+            // Product::where('category_id', $id)->update(['category_id' => 1]);
             return redirect()->route('category.index')->with('success','Xóa thành công');
         } else {
             return redirect()->route('category.index')->with('error','Không thể xóa danh mục nay');

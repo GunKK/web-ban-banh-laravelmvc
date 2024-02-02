@@ -31,7 +31,7 @@
                     Tổng hóa đơn:
                 </td>
                 <td colspan="2" style="padding: 8px">
-                    <h6 style="text-align: right; margin-top: 12px; color: #227FD6">{{ $bill->payment_amount }}</h6>
+                    <h2 style="text-align: right; margin-top: 12px; color: #227FD6">{{ $bill->payment_amount }} VND</h2>
                 </td>
             </tr>
         </table>

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -18,7 +19,10 @@ class ProductController extends Controller
      */
     public function index(Request $request): View
     {
-        $products = Product::with('category')->orderBy("id", "ASC")->paginate(6);
+        $products = Cache::remember('products-page-' . request('page', 1), 3600, function() {
+            return Product::with('category')->orderBy("id", "ASC")->paginate(6);
+        });
+        // $products = Product::with('category')->orderBy("id", "ASC")->paginate(6);
         return view('admins.products.index', compact('products'));
     }
 
@@ -29,7 +33,7 @@ class ProductController extends Controller
      */
     public function create(): View
     {
-        $categories = Category::where('active', '1')->get();
+        $categories = Category::all();
         return view('admins.products.new', compact('categories'));
     }
 
@@ -41,13 +45,8 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $product = new Product();
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->category_id = $request->category_id;
-        $product->price_base = $request->price_base;
-        $product->price_sale = $request->price_sale;
-        $product->images = $request->images;
+        $product = new Product($request->validated());
+        $product->price_sale = $request->price_sale ?? null;
         $product->save();
         session()->flash('success','Thêm sản phẩm thành công');
         return redirect()->route('product.index');
@@ -62,7 +61,8 @@ class ProductController extends Controller
     public function edit(string $id): View
     {
         $product = Product::findOrFail($id);
-        return view('admins.products.edit', compact('product'));
+        $categories = Category::all();
+        return view('admins.products.edit', compact('product', 'categories'));
     }
 
     /**

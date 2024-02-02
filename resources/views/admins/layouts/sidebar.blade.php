@@ -17,6 +17,19 @@
     </li>
 
     <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#section-bill" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-receipt"></i><span>Đơn hàng</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="section-bill" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{{ route('bill.index') }}">
+                    <i class="bi bi-circle"></i><span>Danh sách</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#section-category" data-bs-toggle="collapse" href="#">
             <i class="bi bi-book"></i><span>Danh mục</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>

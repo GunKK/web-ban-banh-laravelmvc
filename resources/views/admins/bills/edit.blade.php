@@ -1,5 +1,5 @@
 @extends('admins.layouts.app')
-@section('title', 'update bill # {{ $bill->id }}')
+@section('title', 'update bill')
 @section('content')
 
     <main id="main" class="main">
@@ -33,15 +33,31 @@
                             <span class="h6">Phương thức thanh toán:</span> {{ $bill->payment_method == 'Cash' ? 'Tiền mặt' : 'Paypal' }}
                         </div>
                         <div class="mt-1">
-                            <form action="" method="post">
+                            <form action="{{ route('bill.update',['id' => $bill->id]) }}" method="post">
                                 <span class="h6">Trạng thái giao hàng:</span>
                                 @csrf
                                 @method('put')
                                 <select class="form-select" name="status">
-                                    <option value="Processing">Đang xử lý</option>
-                                    <option value="Delivering">Đang giao</option>
-                                    <option value="Success">Đã giao</option>
-                                    <option value="Failure">Hủy đơn hàng</option>
+                                    <option value="Processing"
+                                    @if ($bill->status == 'Processing') selected @endif
+                                    >
+                                        Đang xử lý
+                                    </option>
+                                    <option value="Delivering"
+                                    @if ($bill->status == 'Delivering') selected @endif
+                                    >
+                                        Đang giao
+                                    </option>
+                                    <option value="Success"
+                                    @if ($bill->status == 'Success') selected @endif
+                                    >
+                                        Đã giao
+                                    </option>
+                                    <option value="Failure"
+                                    @if ($bill->status == 'Failure') selected @endif
+                                    >
+                                        Hủy đơn hàng
+                                    </option>
                                 </select>
                                 <div class="mt-2">
                                     <button type="submit" class="btn btn-success">Cập nhật</button>
@@ -59,7 +75,7 @@
                                     <th scope="col">Thành tiền</th>
                                 </tr>
                             </thead>
-                            @foreach ( $bill->billItem as $item )
+                            @foreach ( $bill->billItems as $item )
                                 <tr>
                                     <td scope="row">
                                         <span class="h6">{{ $item->product->name }}: </span>

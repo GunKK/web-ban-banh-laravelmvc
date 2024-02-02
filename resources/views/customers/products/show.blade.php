@@ -15,7 +15,7 @@
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-6">
                         <h4 class="box-title mt-5">Mô tả sản phẩm</h4>
-                        <p>{{ $product->description }}</p>
+                        <p>{!! $product->description !!}</p>
                             <h4 class="mt-5">
                                 Giá bán: ${{ $product->price_base }}<small class="text-success">(36%off)</small>
                             </h4>

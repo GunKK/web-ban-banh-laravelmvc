@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Product;
+use App\Observers\ProductObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Pagination\Paginator;
@@ -33,5 +35,7 @@ class AppServiceProvider extends ServiceProvider
             $categories = Category::select('id', 'name')->get();
             return $view->with('categories', $categories);
         });
+
+        Product::observe(ProductObserver::class);
     }
 }

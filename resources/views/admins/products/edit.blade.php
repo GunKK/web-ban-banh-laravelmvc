@@ -1,5 +1,5 @@
 @extends('admins.layouts.app')
-@section('title', 'update product # {{ $product->id }}')
+@section('title', 'update product')
 @section('content')
 
     <main id="main" class="main">
