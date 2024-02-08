@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\UpdateBillNotification;
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ class BillController extends Controller
         $bill = Bill::findOrFail($id);
         $bill->status = $request->status;
         $bill->save();
+        broadcast(new UpdateBillNotification($bill));
         return redirect()->route('bill.edit', ['id' => $id])->with('success','Cập nhật đơn hàng #' . $id . ' thành công');
     }
 }

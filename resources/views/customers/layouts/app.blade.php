@@ -8,7 +8,7 @@
     <title>@yield('title')</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-
+    @vite('resources/js/app.js')
     <!-- Favicons -->
     <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
@@ -161,21 +161,39 @@
             });
         });
 
-        function convertDate(date) {
-            const updateDate = new Date(date);
-            const milliseconds = Date.now() - updateDate.getTime();
-            const oneDay = 1000 * 3600 * 24;
-            const oneHours = 1000 * 3600;
-            const oneMinute = 1000 * 60;
-            if (milliseconds > oneDay) {
-                return `${Math.floor(milliseconds/oneDay)} days ago`;
-            } else if(milliseconds > oneHours) {
-                return `${Math.floor(milliseconds/oneHours)} hours ago`;
-            } else {
-                return `${Math.floor(milliseconds/oneMinute)} minutes ago`;
-            }
-        }
+
     </script>
+@if (Auth::check())
+    <script type="module">
+        const channel = Echo.private('update-bill-notification.{{ Auth::user()->id}}');
+        channel
+            .listen('.updatebill.status', function(data) {
+                // console.log(data);
+                const bill = data.bill
+                switch (bill.status) {
+                    case 'Processing':
+                        toastr.warning(`Đơn hàng #${bill.id} đang được xử lý`);
+                        break;
+                    case 'Delivering':
+                        toastr.info(`Đơn hàng #${bill.id} đang trên đường vận chuyển`);
+                        break;
+                    case 'Success':
+                        toastr.success(`Đơn hàng #${bill.id} đã giao thành công`);
+                        break;
+                    case 'Failure':
+                        toastr.error(`Đơn hàng #${bill.id} đã bị hủy`);
+                        break;
+
+                    default:
+                        toastr.error(`Đơn hàng #${bill.id} bị lỗi trong quá trình xử lý`);
+                        break;
+                }
+            }).error((error) => {
+                console.error('Error :', error);
+            });
+    </script>
+@endif
+
 
 @yield('scrips')
 </body>
