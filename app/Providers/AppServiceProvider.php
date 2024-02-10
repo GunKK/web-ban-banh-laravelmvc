@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Bill;
 use App\Models\Category;
 use App\Models\Product;
+use App\Observers\BillObserver;
+use App\Observers\CategoryObserver;
 use App\Observers\ProductObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Session;
@@ -37,5 +40,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Product::observe(ProductObserver::class);
+        Category::observe(CategoryObserver::class);
+        Bill::observe(BillObserver::class);
     }
 }
