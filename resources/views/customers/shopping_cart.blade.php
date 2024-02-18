@@ -11,7 +11,7 @@
                             <div class="row">
 
                                 <div class="col-lg-7">
-                                    <h5 class="mb-3"><a href="{{ route('product') }}" class="text-body"><i
+                                    <h5 class="mb-3"><a href="{{ url('/product?categoryId=1') }}" class="text-body"><i
                                                 class="bi bi-arrow-left-circle-fill me-2"></i>Continue shopping</a></h5>
                                     <hr>
 

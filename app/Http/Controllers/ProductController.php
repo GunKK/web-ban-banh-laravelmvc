@@ -26,8 +26,7 @@ class ProductController extends Controller
                     ->orWhereLike('description', $q)
                     ->orderBy("price_base", $sortASC)
                     ->paginate($limit)->withQueryString();
-        $count = count($products);
-        return view('customers.products.index', compact('products', 'count', 'limit', 'sortASC', 'q', 'categoryId'));
+        return view('customers.products.index', compact('products', 'limit', 'sortASC', 'q', 'categoryId'));
     }
 
     public function show($id): View

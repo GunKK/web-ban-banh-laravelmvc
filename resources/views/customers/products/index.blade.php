@@ -15,7 +15,7 @@
                     <!-- content -->
                     <div class="col-lg-9">
                         <header class="d-sm-flex align-items-center border-bottom mb-4 pb-3">
-                            <strong class="d-block py-2">{{ $count }} Items found </strong>
+                            <strong class="d-block py-2">{{ $products->count() }} Items found </strong>
                             <div class="ms-auto">
                                 <span>Số sản phẩm</span>
                                 <select name="limit" class="form-select d-inline-block w-auto border pt-1">

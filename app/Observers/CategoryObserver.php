@@ -61,5 +61,6 @@ class CategoryObserver
     public function forceDeleted(Category $category)
     {
         Cache::flush();
+        $category->products()->update(['category_id' => 1]);
     }
 }
